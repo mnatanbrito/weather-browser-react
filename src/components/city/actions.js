@@ -2,6 +2,7 @@ import {
   SEARCH_CITY_STARTED,
   SEARCH_CITY_SUCCEEDED,
   SEARCH_CITY_FAILED,
+  SELECT_PAGE_SIZE,
 } from './actionTypes';
 import { getCitiesByName } from './services';
 
@@ -30,4 +31,11 @@ export const searchCityByName = (name) => (dispatch) => {
     .catch((err) => {
       dispatch(searchCityByNameFailed(err.message));
     });
+};
+
+export const selectPageSize = (pageSize) => (dispatch) => {
+  dispatch({
+    type: SELECT_PAGE_SIZE,
+    pageSize,
+  });
 };

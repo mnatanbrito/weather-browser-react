@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 function InputField({
+  inputRef,
   value,
   loading = false,
   onChange,
@@ -13,7 +14,7 @@ function InputField({
     onSubmit();
   };
   return (
-    <form noValidate onSubmit={submit}>
+    <form noValidate onSubmit={submit} ref={inputRef}>
       <div
         className={`inputfield control has-icons-left has-icons-right ${
           loading ? 'is-loading' : ''
@@ -35,4 +36,6 @@ function InputField({
   );
 }
 
-export default InputField;
+export default forwardRef((props, ref) => (
+  <InputField inputRef={ref} {...props} />
+));

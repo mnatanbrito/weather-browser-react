@@ -5,12 +5,15 @@ import {
   SEARCH_CITY_STARTED,
   SEARCH_CITY_SUCCEEDED,
   SEARCH_CITY_FAILED,
+  SELECT_PAGE_SIZE,
 } from './actionTypes';
+import constants from './constants';
 
 const initialState = {
   allIds: [],
   byId: {},
   savedIds: [],
+  pageSize: constants.pageSizes[0],
 
   isSearching: false,
   hasSearched: false,
@@ -72,6 +75,13 @@ const citiesReducer = (state = initialState, action) => {
         hasSearched: true,
         searchError: action.error,
       };
+
+    case SELECT_PAGE_SIZE:
+      return {
+        ...state,
+        pageSize: action.pageSize,
+      };
+
     default:
       return state;
   }
@@ -88,3 +98,8 @@ export const weatherInfoByIdSelector = (id) =>
     allIds,
     (cities) => (find(cities, (city) => city.id === id) || {}).weather[0]
   );
+
+export const currentPageSizeSelector = createSelector(
+  (state) => state,
+  (state) => state.pageSize
+);
