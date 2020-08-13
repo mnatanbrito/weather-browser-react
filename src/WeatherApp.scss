@@ -1,0 +1,13 @@
+html, body, #root {
+    height: 100vh;
+    width: 100vw;
+}
+
+.weather-app {
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    width: 100vw;
+
+    font-family: 'Roboto', sans-serif;
+}
