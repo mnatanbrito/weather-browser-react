@@ -28,9 +28,11 @@ function InputField({
           value={value}
           maxLength={maxLength}
         />
-        <span className="icon is-medium is-right">
-          <i className="fas fa-search"></i>
-        </span>
+        {!loading && (
+          <span className="icon is-medium is-right">
+            <i className="fas fa-search"></i>
+          </span>
+        )}
       </div>
     </form>
   );

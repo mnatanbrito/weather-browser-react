@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 import './WeatherApp.scss';
-import store from './store';
+import store from './redux/store';
 import NotificationContainer from './components/notifications/NotificationContainer';
 import Dashboard from './components/dashboard/Dashboard';
 

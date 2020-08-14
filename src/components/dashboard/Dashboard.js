@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { searchCityByName } from '../city/actions';
-import useDebounce from '../../hooks/useDebounce';
+// import useDebounce from '../../hooks/useDebounce';
 import InputField from '../shared/InputField';
 import SavedCities from '../city/SavedCities';
 import ResultsToggle from '../city/ResultsToggle';
 import Logo from '../shared/Logo';
+import ApiStatus from '../city/ApiStatus';
 
 function Dashboard() {
   const inputRef = useRef();
@@ -14,7 +15,7 @@ function Dashboard() {
   const cities = useSelector((state) => state.cities);
   const [text, setText] = useState('');
 
-  const debouncedText = useDebounce(text, 500);
+  // const debouncedText = useDebounce(text, 500);
 
   const onChange = (ev) => {
     setText(ev.target.value);
@@ -35,12 +36,6 @@ function Dashboard() {
   }, [cities.hasSearched, cities.searchError]);
 
   useEffect(() => {
-    if (debouncedText) {
-      console.log(`debouncedText = ${debouncedText}`);
-    }
-  }, [debouncedText]);
-
-  useEffect(() => {
     if (inputRef && inputRef.current) {
       console.log(`inputRef = ${inputRef.current.getBoundingClientRect().y}`);
     }
@@ -52,6 +47,11 @@ function Dashboard() {
         <div className="dashboard columns is-multiline is-vcentered">
           <div className="column is-12">
             <Logo />
+          </div>
+          <div className="column is-12">
+            <div className="has-text-centered">
+              <ApiStatus />
+            </div>
           </div>
           <div className="column is-12">
             <InputField

@@ -3,6 +3,8 @@ import {
   SEARCH_CITY_SUCCEEDED,
   SEARCH_CITY_FAILED,
   SELECT_PAGE_SIZE,
+  SELECT_PAGE_INDEX,
+  REMOVE_CITY,
 } from './actionTypes';
 import { getCitiesByName } from './services';
 
@@ -16,9 +18,10 @@ const searchCityByNameSucceeded = (cities) => ({
   cities,
 });
 
-const searchCityByNameFailed = (error) => ({
+const searchCityByNameFailed = (error, originalError) => ({
   type: SEARCH_CITY_FAILED,
   error,
+  originalError,
 });
 
 export const searchCityByName = (name) => (dispatch) => {
@@ -29,7 +32,7 @@ export const searchCityByName = (name) => (dispatch) => {
       dispatch(searchCityByNameSucceeded(cities));
     })
     .catch((err) => {
-      dispatch(searchCityByNameFailed(err.message));
+      dispatch(searchCityByNameFailed(err.message, err));
     });
 };
 
@@ -37,5 +40,19 @@ export const selectPageSize = (pageSize) => (dispatch) => {
   dispatch({
     type: SELECT_PAGE_SIZE,
     pageSize,
+  });
+};
+
+export const selectPageIndex = (pageIndex) => (dispatch) => {
+  dispatch({
+    type: SELECT_PAGE_INDEX,
+    pageIndex,
+  });
+};
+
+export const removeCity = (id) => (dispatch) => {
+  dispatch({
+    type: REMOVE_CITY,
+    id,
   });
 };

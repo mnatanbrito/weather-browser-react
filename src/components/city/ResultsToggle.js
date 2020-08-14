@@ -3,16 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import constants from './constants';
 import { selectPageSize } from './actions';
-import { currentPageSizeSelector } from './reducer';
+import { currentPageSizeSelector, citiesSelector } from './reducer';
 
 function ResultsToggle({ onChange }) {
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.cities);
+  const savedCities = citiesSelector(cities);
   const pageSize = currentPageSizeSelector(cities);
 
   const change = (size) => {
     dispatch(selectPageSize(size));
   };
+
+  if (savedCities.length === 0) {
+    return null;
+  }
 
   return (
     <div className="buttons has-addons is-pulled-right">

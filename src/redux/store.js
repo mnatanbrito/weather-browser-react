@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import { isDevelopment } from './env';
+import { isDevelopment } from '../env';
 
 import rootReducer from './reducer';
 

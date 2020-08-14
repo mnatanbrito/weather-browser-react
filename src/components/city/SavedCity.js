@@ -2,7 +2,18 @@ import React from 'react';
 
 import { kelvinToCelsius } from '../../utils/temperature';
 
-function SavedCity({ name, icon, weatherDescription, minTemp, maxTemp }) {
+function SavedCity({
+  id,
+  name,
+  icon,
+  weatherDescription,
+  minTemp,
+  maxTemp,
+  onRemove,
+}) {
+  const remove = () => {
+    onRemove && onRemove(id);
+  };
   return (
     <div className="card mb-2">
       <div className="card-content">
@@ -37,6 +48,18 @@ function SavedCity({ name, icon, weatherDescription, minTemp, maxTemp }) {
             <div>
               <p className="heading">Max. Temp</p>
               <p className="title">{kelvinToCelsius(maxTemp)}</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Actions</p>
+              <p className="title">
+                <a
+                  className="delete is-large"
+                  title="Remove this item"
+                  onClick={remove}
+                ></a>
+              </p>
             </div>
           </div>
         </nav>
