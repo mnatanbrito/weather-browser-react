@@ -1,7 +1,8 @@
 import { SELECT_LANGUAGE } from './actionTypes';
+import locales from '../../i18n/locales';
 
 const initialState = {
-  language: 'enUS',
+  language: locales.EN,
 };
 
 const settingsReducer = (state = initialState, action) => {

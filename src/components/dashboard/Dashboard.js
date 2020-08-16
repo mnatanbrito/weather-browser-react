@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
 
 import { searchCityByName } from '../city/actions';
-// import useDebounce from '../../hooks/useDebounce';
 import InputField from '../shared/InputField';
 import SavedCities from '../city/SavedCities';
 import ResultsToggle from '../city/ResultsToggle';
@@ -14,8 +14,7 @@ function Dashboard() {
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.cities);
   const [text, setText] = useState('');
-
-  // const debouncedText = useDebounce(text, 500);
+  const i18n = useIntl();
 
   const onChange = (ev) => {
     setText(ev.target.value);
@@ -28,16 +27,8 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    if (cities.hasSearched) {
-      if (cities.searchError) {
-        alert(cities.searchError);
-      }
-    }
-  }, [cities.hasSearched, cities.searchError]);
-
-  useEffect(() => {
     if (inputRef && inputRef.current) {
-      console.log(`inputRef = ${inputRef.current.getBoundingClientRect().y}`);
+      inputRef.current.focus();
     }
   }, [inputRef]);
 
@@ -60,6 +51,9 @@ function Dashboard() {
               value={text}
               onChange={onChange}
               onSubmit={onSubmit}
+              placeholder={i18n.formatMessage({
+                id: 'citySearchInputPlaceholder',
+              })}
             />
           </div>
           <div className="column is-12">

@@ -22,7 +22,7 @@ const initialState = {
   isSearching: false,
   hasSearched: false,
   searchError: '',
-  originalSearchError: null,
+  searchErrorStatus: null,
 };
 
 const citiesReducer = (state = initialState, action) => {
@@ -33,7 +33,7 @@ const citiesReducer = (state = initialState, action) => {
         isSearching: true,
         hasSearched: false,
         searchError: '',
-        originalSearchError: null,
+        searchErrorStatus: null,
       };
 
     case SEARCH_CITY_SUCCEEDED:
@@ -79,13 +79,14 @@ const citiesReducer = (state = initialState, action) => {
         isSearching: false,
         hasSearched: true,
         searchError: action.error,
-        originalSearchError: action.originalError,
+        searchErrorStatus: action.errorStatus,
       };
 
     case SELECT_PAGE_SIZE:
       return {
         ...state,
         pageSize: action.pageSize,
+        pageIndex: 0,
       };
 
     case SELECT_PAGE_INDEX:
@@ -109,10 +110,18 @@ const citiesReducer = (state = initialState, action) => {
         {}
       );
 
+      /* adjust pageIndex if needed */
+      const numberOfPages = Math.ceil(citiesToStay.length / state.pageSize);
+      const newPageIndex =
+        state.pageIndex > numberOfPages - 1
+          ? numberOfPages - 1
+          : state.pageIndex;
+
       return {
         ...state,
         allIds: idsToStay,
         byId: reducedCitiesToStay,
+        pageIndex: newPageIndex,
       };
 
     default:
@@ -155,11 +164,8 @@ export const currentPageIndexSelector = createSelector(
 export const isApiCallLimitError = createSelector(
   (state) => state,
   (state) => {
-    if (state.originalSearchError) {
-      if (
-        state.originalSearchError.response &&
-        state.originalSearchError.response.status === 429
-      ) {
+    if (state.searchErrorStatus) {
+      if (state.searchErrorStatus === 429) {
         return true;
       }
     }

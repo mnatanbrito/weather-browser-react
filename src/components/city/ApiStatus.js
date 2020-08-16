@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+
 import { isApiCallLimitError } from './reducer';
 
 export default function ApiStatus() {
@@ -15,7 +17,7 @@ export default function ApiStatus() {
       <span className="icon">
         <i className="fas fa-exclamation-triangle"></i>
       </span>
-      You might have reached free tier limit
+      <FormattedMessage id="apiLimitMessage" />
     </span>
   );
 }

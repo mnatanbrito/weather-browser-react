@@ -7,6 +7,7 @@ function InputField({
   onChange,
   onSubmit,
   maxLength = 140,
+  placeholder,
 }) {
   const submit = (ev) => {
     ev.preventDefault();
@@ -23,7 +24,7 @@ function InputField({
         <input
           className="inputfield--input input is-large"
           type="text"
-          placeholder="Type a city name"
+          placeholder={placeholder}
           onChange={onChange}
           value={value}
           maxLength={maxLength}

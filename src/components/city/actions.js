@@ -7,6 +7,7 @@ import {
   REMOVE_CITY,
 } from './actionTypes';
 import { getCitiesByName } from './services';
+import { showNotification } from '../notifications/actions';
 
 const searchCityByNameStarted = (name) => ({
   type: SEARCH_CITY_STARTED,
@@ -18,36 +19,47 @@ const searchCityByNameSucceeded = (cities) => ({
   cities,
 });
 
-const searchCityByNameFailed = (error, originalError) => ({
+const searchCityByNameFailed = (error, errorStatus) => ({
   type: SEARCH_CITY_FAILED,
   error,
-  originalError,
+  errorStatus,
 });
 
-export const searchCityByName = (name) => (dispatch) => {
+export const searchCityByName = (name) => (dispatch, getState) => {
   dispatch(searchCityByNameStarted(name));
 
-  return getCitiesByName(name)
+  const lang = getState().settings.language === 'en' ? 'en' : 'pt_br';
+
+  return getCitiesByName(name, lang)
     .then((cities) => {
       dispatch(searchCityByNameSucceeded(cities));
     })
     .catch((err) => {
-      dispatch(searchCityByNameFailed(err.message, err));
+      const message =
+        (err.response || {}).status === 404
+          ? 'City not found 🤔'
+          : 'Something went wrong 😔';
+      dispatch(searchCityByNameFailed(message, (err.response || {}).status));
+      dispatch(showNotification('error', message));
     });
 };
 
-export const selectPageSize = (pageSize) => (dispatch) => {
-  dispatch({
-    type: SELECT_PAGE_SIZE,
-    pageSize,
-  });
+export const selectPageSize = (pageSize) => (dispatch, getState) => {
+  if (getState().cities.pageSize !== pageSize) {
+    dispatch({
+      type: SELECT_PAGE_SIZE,
+      pageSize,
+    });
+  }
 };
 
-export const selectPageIndex = (pageIndex) => (dispatch) => {
-  dispatch({
-    type: SELECT_PAGE_INDEX,
-    pageIndex,
-  });
+export const selectPageIndex = (pageIndex) => (dispatch, getState) => {
+  if (getState().cities.pageIndex !== pageIndex) {
+    dispatch({
+      type: SELECT_PAGE_INDEX,
+      pageIndex,
+    });
+  }
 };
 
 export const removeCity = (id) => (dispatch) => {

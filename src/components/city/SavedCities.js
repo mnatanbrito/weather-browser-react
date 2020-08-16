@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { map } from 'lodash/collection';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
   citiesSelector,
@@ -15,6 +16,7 @@ import Paginator from '../shared/Paginator';
 import ConfirmationDialog from '../shared/ConfirmationDialog';
 
 function SavedCities() {
+  const i18n = useIntl();
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.cities);
   const totalCities = citiesSelector(cities);
@@ -47,15 +49,23 @@ function SavedCities() {
     <>
       <ConfirmationDialog
         visible={showDeleteConfirmation}
-        title="Delete confirmation"
+        title={i18n.formatMessage({
+          id: 'deleteModalConfirmationTitle',
+        })}
         icon="fa-ban"
-        confirmLabel="Delete"
+        confirmLabel={i18n.formatMessage({
+          id: 'deleteModalConfirmationConfirmLabel',
+        })}
         confirmClass="is-danger"
-        cancelLabel="Cancel"
+        cancelLabel={i18n.formatMessage({
+          id: 'deleteModalConfirmationCancelLabel',
+        })}
         handleCancel={onCancel}
         handleConfirm={onRemove}
       >
-        <p>Would you like to confirm the operation?</p>
+        <p>
+          <FormattedMessage id="deleteModalConfirmationMessage" />
+        </p>
       </ConfirmationDialog>
 
       <section className="section mb-3">

@@ -1,7 +1,9 @@
 import React from 'react';
 import { map } from 'lodash/collection';
+import { useIntl } from 'react-intl';
 
 function Paginator({ total = 5, current, onPageSelected }) {
+  const i18n = useIntl();
   const renderInline = total <= 5;
 
   const Pages = () => (
@@ -12,6 +14,9 @@ function Paginator({ total = 5, current, onPageSelected }) {
             className={`pagination-link ${
               current === index ? 'is-current' : ''
             }`}
+            title={`${i18n.formatMessage({
+              id: 'pageLabel',
+            })} ${index + 1}`}
             aria-label="Goto page 1"
             onClick={() => onPageSelected(index)}
           >
@@ -29,8 +34,16 @@ function Paginator({ total = 5, current, onPageSelected }) {
     >
       {!renderInline && (
         <>
-          <a className="pagination-previous">Previous</a>
-          <a className="pagination-next">Next page</a>
+          <a className="pagination-previous">
+            {i18n.formatMessage({
+              id: 'previousPageLabel',
+            })}
+          </a>
+          <a className="pagination-next">
+            {i18n.formatMessage({
+              id: 'nextPageLabel',
+            })}
+          </a>
         </>
       )}
       <ul className="pagination-list">

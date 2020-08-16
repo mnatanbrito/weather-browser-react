@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
-import { withToastManager } from 'react-toast-notifications';
-import { useSelector } from 'react-redux';
+import { useToasts } from 'react-toast-notifications';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { lastNotificationSelector } from './reducer';
+import { hideNotification } from './actions';
 
-function NotificationContainer({ toastManager, children }) {
-  const notifications = useSelector((state) => state.notifications);
-  const lastNotification = lastNotificationSelector(notifications);
+function NotificationContainer({ children }) {
+  const { addToast } = useToasts();
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notifications);
 
   useEffect(() => {
-    if (lastNotification) {
-      const { message, type } = lastNotification;
-      toastManager.add(<p>{message}</p>, {
-        appearance: type,
+    if (notification) {
+      const { id, message, notificationType } = notification;
+
+      addToast(message, {
+        appearance: notificationType,
         autoDismiss: true,
-        pauseOnHover: false,
       });
+
+      dispatch(hideNotification(id));
     }
-  }, [lastNotification, toastManager]);
+  }, [notification, addToast, dispatch]);
 
   return <>{children}</>;
 }
 
-export default withToastManager(NotificationContainer);
+export default NotificationContainer;
